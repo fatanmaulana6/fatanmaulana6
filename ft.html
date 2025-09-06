@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NURRIJAL FATAN MAULANA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Enhanced Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(3px 3px at 20px 30px, #00ffff, transparent),
+                radial-gradient(2px 2px at 40px 70px, #ff0080, transparent),
+                radial-gradient(2px 2px at 90px 40px, #00ff40, transparent),
+                radial-gradient(1px 1px at 130px 80px, #ff4000, transparent),
+                radial-gradient(3px 3px at 160px 30px, #8000ff, transparent),
+                radial-gradient(1px 1px at 200px 60px, #ffff00, transparent);
+            background-repeat: repeat;
+            background-size: 300px 300px;
+            animation: sparkle 25s linear infinite;
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-50px) rotate(90deg); }
+            50% { transform: translateY(-100px) rotate(180deg); }
+            75% { transform: translateY(-50px) rotate(270deg); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .biodata-card {
+            background: rgba(0, 20, 40, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 
+                0 25px 50px rgba(0, 255, 255, 0.15),
+                0 0 80px rgba(255, 0, 128, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            animation: slideInUp 1s ease-out;
+            transition: all 0.3s ease;
+        }
+        
+        .biodata-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 35px 70px rgba(0, 255, 255, 0.2),
+                0 0 100px rgba(255, 0, 128, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(80px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff0080, #00ff40, #ffff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite, glow 2s ease-in-out infinite alternate;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .header .subtitle {
+            font-family: 'Orbitron', monospace;
+            color: #00ffff;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            opacity: 0.9;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes glow {
+            from { filter: brightness(1) drop-shadow(0 0 20px rgba(0, 255, 255, 0.3)); }
+            to { filter: brightness(1.3) drop-shadow(0 0 30px rgba(0, 255, 255, 0.6)); }
+        }
+        
+        .profile-section {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+            align-items: start;
+        }
+        
+        .profile-image-container {
+            position: relative;
+            text-align: center;
+        }
+        
+        .profile-image {
+            width: 280px;
+            height: 370px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(0, 255, 255, 0.6);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .profile-placeholder {
+            width: 280px;
+            height: 370px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 128, 0.2));
+            border: 4px solid rgba(0, 255, 255, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .profile-placeholder .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .profile-placeholder .upload-text {
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .profile-image-container:hover .profile-image,
+        .profile-image-container:hover .profile-placeholder {
+            transform: scale(1.05) rotateY(5deg);
+            border-color: #ff0080;
+            box-shadow: 
+                0 20px 40px rgba(0, 255, 255, 0.3),
+                0 0 60px rgba(255, 0, 128, 0.2);
+        }
+        
+        .upload-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffff;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            border: 2px solid #00ffff;
+        }
+        
+        .profile-image-container:hover .upload-overlay {
+            opacity: 1;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .info-table {
+            background: rgba(0, 30, 60, 0.4);
+            border-radius: 20px;
+            padding: 35px;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-table table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 20px;
+        }
+        
+        .info-table tr {
+            transition: all 0.3s ease;
+        }
+        
+        .info-table tr:hover {
+            background: rgba(0, 255, 255, 0.08);
+            border-radius: 10px;
+            transform: translateX(10px);
+        }
+        
+        .info-table th {
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            padding: 15px 25px;
+            text-align: left;
+            width: 140px;
+            font-size: 1rem;
+        }
+        
+        .info-table td {
+            color: #ffffff;
+            padding: 15px 25px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+        
+        .info-table tr:hover td {
+            border-left-color: #ff0080;
+        }
+        
+        .info-table a {
+            color: #ff0080;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .info-table a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ffff;
+            transition: width 0.3s ease;
+        }
+        
+        .info-table a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+        
+        .info-table a:hover::after {
+            width: 100%;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 40px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 25px;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffff, #ff0080);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            background: rgba(0, 40, 80, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ffff, #ff0080, transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 255, 255, 0.08);
+            border-color: #ff0080;
+            box-shadow: 0 15px 30px rgba(0, 255, 255, 0.2);
+        }
+        
+        .timeline-year {
+            color: #ff0080;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+        }
+        
+        .timeline-title {
+            color: #ffffff;
+            font-weight: 500;
+            margin-left: 25px;
+            font-size: 1.1rem;
+        }
+        
+        .timeline-company {
+            color: #00ffff;
+            font-weight: 600;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        
+        .skill-item {
+            text-align: center;
+            cursor: pointer;
+            background: rgba(0, 40, 80, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .skill-item:hover::before {
+            left: 100%;
+        }
+        
+        .skill-item:hover {
+            background: rgba(0, 255, 255, 0.15);
+            transform: scale(1.08) rotateY(5deg);
+            border-color: #ff0080;
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+        }
+        
+        .skill-name {
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .upload-message {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00ffff, #ff0080);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            transform: translateX(400px);
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+            z-index: 1000;
+        }
+        
+        .upload-message.show {
+            transform: translateX(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 3rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .biodata-card {
+                padding: 25px;
+            }
+            
+            .profile-image, .profile-placeholder {
+                width: 250px;
+                height: 330px;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 15px;
+            }
+            
+            .upload-message {
+                right: 15px;
+                top: 15px;
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BIODATA</h1>
+            <div class="subtitle">INFORMASI</div>
+        </div>
+        
+        <div class="biodata-card">
+            <div class="profile-section">
+                <div class="profile-image-container" onclick="document.getElementById('fileInput').click()">
+                    <img id="profileImage" class="profile-image" src="pp.png" alt="Profile Picture" style="display: none;" />
+                    <div id="profilePlaceholder" class="profile-placeholder">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">Klik untuk<br>Upload Foto</div>
+                    </div>
+                    <div class="upload-overlay">📸 Ganti Foto</div>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*" />
+                </div>
+                
+                <div class="info-table">
+                    <table>
+                        <tr>
+                            <th>NAMA</th>
+                            <th>:</th>
+                            <td>NURRIJAL FATAN MAULANA</td>
+                        </tr>
+                        <tr>
+                            <th>STATUS</th>
+                            <th>:</th>
+                            <td>MAHASISWA</td>
+                        </tr>
+                        <tr>
+                            <th>TANGGAL LAHIR</th>
+                            <th>:</th>
+                            <td>06 SEPTEMBER 2004</td>
+                        </tr>
+                        <tr>
+                            <th>AGAMA</th>
+                            <th>:</th>
+                            <td>ISLAM</td>
+                        </tr>
+                        <tr>
+                            <th>ALAMAT</th>
+                            <th>:</th>
+                            <td>DESA BANDORASAWETAN, KEC. CILIMUS, KAB. KUNINGAN, JAWA BARAT</td>
+                        </tr>
+                        <tr>
+                            <th>EMAIL</th>
+                            <th>:</th>
+                            <td><a href="mailto:fatanmaulana694@gmail.com">fatanmaulana694@gmail.com</a></td>
+                        </tr>
+                        <tr>
+                            <th>CONTACT</th>
+                            <th>:</th>
+                            <td><a href="tel:+620895357586674">0895357586674</a></td>
+                        </tr>
+                        <tr>
+                            <th>GITHUB</th>
+                            <th>:</th>
+                            <td><a href="https://github.com/fatanmaulana6" target="_blank">github.com/fatanmaulana6</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="biodata-card">
+            <div class="section">
+                <h2 class="section-title">PENDIDIKAN</h2>
+                <div class="timeline-item">
+                    <span class="timeline-year">2017</span>
+                    <span class="timeline-title">SDN 1 BANDORASAWETAN</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2020</span>
+                    <span class="timeline-title">SMPN 1 CILIMUS</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2023</span>
+                    <span class="timeline-title">SMAN 1 CILIMUS</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2024-SEKARANG</span>
+                    <span class="timeline-title">STMIK IKMI CIREBON</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="biodata-card">
+            <div class="section">
+                <h2 class="section-title">HOBI</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <div class="skill-name">OLAHRAGA</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">BERNYANYI</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">DENGAR MUSIK</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">NONTON EMYU</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="uploadMessage" class="upload-message">
+        🚀 Foto berhasil diupdate!
+    </div>
+    
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const profileImage = document.getElementById('profileImage');
+        const profilePlaceholder = document.getElementById('profilePlaceholder');
+        const uploadMessage = document.getElementById('uploadMessage');
+
+        // Load saved image from localStorage
+        window.addEventListener('load', function() {
+            const savedImage = localStorage.getItem('akfryProfileImage');
+            if (savedImage) {
+                profileImage.src = savedImage;
+                profileImage.style.display = 'block';
+                profilePlaceholder.style.display = 'none';
+            }
+        });
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            
+            if (file) {
+                // Validate file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('⚠️ Ukuran file terlalu besar! Maksimal 5MB.');
+                    return;
+                }
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('⚠️ File harus berupa gambar (JPG, PNG, GIF, dll)!');
+                    return;
+                }
+
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    profileImage.src = e.target.result;
+                    profileImage.style.display = 'block';
+                    profilePlaceholder.style.display = 'none';
+                    
+                    // Save to localStorage
+                    localStorage.setItem('akfryProfileImage', e.target.result);
+                    
+                    // Add upload animation
+                    profileImage.style.opacity = '0';
+                    profileImage.style.transform = 'scale(0.8) rotateY(180deg)';
+                    
+                    setTimeout(() => {
+                        profileImage.style.transition = 'all 0.6s ease';
+                        profileImage.style.opacity = '1';
+                        profileImage.style.transform = 'scale(1) rotateY(0deg)';
+                    }, 100);
+                    
+                    showUploadMessage();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function showUploadMessage() {
+            uploadMessage.classList.add('show');
+            setTimeout(() => {
+                uploadMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        // Add loading animation with staggered effect
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.biodata-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.3}s`;
+            });
+        });
+
+        // Enhanced parallax effect
+        document.addEventListener('mousemove', function(e) {
+            const cards = document.querySelectorAll('.biodata-card');
+            const x = (e.clientX / window.innerWidth) - 0.5;
+            const y = (e.clientY / window.innerHeight) - 0.5;
+            
+            cards.forEach((card, index) => {
+                const intensity = (index + 1) * 0.5;
+                card.style.transform = `
+                    perspective(1000px) 
+                    rotateX(${y * intensity}deg) 
+                    rotateY(${x * intensity}deg)
+                    translateZ(0)
+                    translateY(-5px)
+                `;
+            });
+        });
+
+        // Reset transform on mouse leave
+        document.addEventListener('mouseleave', function() {
+            const cards = document.querySelectorAll('.biodata-card');
+            cards.forEach(card => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(0)';
+            });
+        });
+
+        // Skill items color animation
+        const skillItems = document.querySelectorAll('.skill-item');
+        skillItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                const colors = ['#00ffff', '#ff0080', '#00ff40', '#ffff00', '#ff4000', '#8000ff'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                this.style.borderColor = randomColor;
+                this.querySelector('.skill-name').style.color = randomColor;
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.borderColor = 'rgba(0, 255, 255, 0.2)';
+                this.querySelector('.skill-name').style.color = '#ffffff';
+            });
+        });
+    </script>
+</body>
+</html>
