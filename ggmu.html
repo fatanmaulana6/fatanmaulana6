@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mas Emyu Food — Online Menu</title>
+<style>
+  :root{
+    --bg:#fff7f2; --primary:#d62828; --accent:#ffd166; --muted:#555;
+    --card:#fff; --radius:12px;
+  }
+  *{box-sizing:border-box;transition:all .25s ease}
+  html,body{margin:0;font-family:Inter,system-ui,Roboto,Arial;background:var(--bg);color:#111}
+  header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--primary);color:#fff;position:sticky;top:0;z-index:10}
+  .brand{font-weight:800;font-size:18px}
+  .cart-btn{background:#fff;color:var(--primary);border-radius:10px;padding:6px 10px;font-weight:700;cursor:pointer;border:none}
+  main{padding:14px}
+  .hero{display:flex;gap:12px;align-items:center;background:linear-gradient(90deg,var(--accent),#fff3d6);padding:14px;border-radius:12px;margin-bottom:14px;flex-wrap:wrap;}
+  h1{font-size:20px;margin:0 0 6px}
+  p.lead{margin:0;color:var(--muted);font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(min-width:740px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--card);border-radius:var(--radius);padding:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+  .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform .3s}
+  .card:hover img{transform:scale(1.05)}
+  .title{font-weight:700;font-size:16px}
+  .desc{font-size:13px;color:var(--muted)}
+  .price{font-weight:800;color:var(--primary)}
+  .btn, .qty-control{margin-top:auto}
+  .btn{background:var(--primary);color:#fff;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.3s}
+  .btn:hover{opacity:.9;transform:scale(1.05)}
+  .qty-control{display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;border-radius:8px;padding:6px 8px;font-weight:700;animation:fadeIn .3s ease}
+  .qty-control button{background:var(--primary);color:#fff;border:none;border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:18px;line-height:1;transition:.25s}
+  .qty-control button:hover{transform:scale(1.1)}
+  @keyframes fadeIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+  footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+  .intro{text-align:center;margin:10px 0 20px;}
+  .intro img{border-radius:16px;margin:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+  .intro .logo{width:150px;height:150px;object-fit:cover;}
+  .intro .desc{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.4;max-width:400px;margin-left:auto;margin-right:auto;}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:100;}
+  .modal-content{background:#fff;border-radius:12px;padding:16px;width:90%;max-width:400px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+  .cart-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding:6px 0}
+  .cart-item span{font-size:14px}
+  .close-btn{background:#ccc;color:#000;border:0;border-radius:6px;padding:6px 10px;cursor:pointer}
+  .checkout-btn{background:var(--primary);color:#fff;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;width:100%;margin-top:10px;font-weight:700}
+  .discount-box{margin-top:10px}
+  .discount-box input, .discount-box select, .discount-box textarea{width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;margin-bottom:6px;font-family:inherit}
+  .apply-btn{background:var(--accent);border:0;padding:6px 10px;border-radius:6px;cursor:pointer;font-weight:600}
+  #countdown{font-weight:700;color:var(--primary);font-size:14px;margin-top:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Mas Emyu Food</div>
+  <button class="cart-btn" id="openCart">🛒 Keranjang <span id="cartCount">0</span></button>
+</header>
+
+<main>
+  <div class="intro">
+    <img src="https://github.com/fatanmaulana6/fatanmaulana6/blob/main/logo.jpg?raw=true" class="logo">
+    <p class="desc">🔴 Mas Emyu Food: The Theatre of Eats! 🏆 Selamat datang di Mas Emyu Food, tempat di mana lidah Anda akan mencetak hattrick kebahagiaan! Kami bukan sekadar toko makanan biasa; kami adalah "Theatre of Eats", markas kuliner bagi para pelanggan yang tahu bahwa rasa enak itu sama pentingnya dengan meraih kemenangan.</p>
+  </div>
+
+  <section class="hero">
+    <div>
+      <h1>🎉 Promo Spesial Jumat</h1>
+      <p class="lead">Gunakan kode <b>AKUFANSEMYU</b> dan nikmati diskon 15% hanya setiap hari Jumat!</p>
+      <div id="countdown"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Menu Populer</h2>
+    <div class="grid" id="productGrid"></div>
+  </section>
+</main>
+
+<!-- Popup Keranjang -->
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <h3>Keranjang Belanja</h3>
+    <div id="cartItems"></div>
+    <p id="cartTotal" style="font-weight:bold;margin-top:10px;">Total: Rp 0</p>
+
+    <div class="discount-box">
+      <input type="text" id="discountCode" placeholder="Masukkan kode promo">
+      <button class="apply-btn" id="applyDiscount">Terapkan</button>
+      <p id="discountMsg" style="font-size:13px;color:var(--muted);margin-top:4px;"></p>
+
+      <label for="payment">Metode Pembayaran:</label>
+      <select id="payment">
+        <option value="COD">COD (Bayar di tempat)</option>
+        <option value="DANA">DANA</option>
+        <option value="SeaBank">SeaBank</option>
+      </select>
+
+      <label for="notes">Catatan Pesanan:</label>
+      <textarea id="notes" rows="2" placeholder="Contoh: tanpa sambal, dll."></textarea>
+    </div>
+
+    <button class="checkout-btn" id="checkoutBtn">Checkout via WhatsApp</button>
+    <button class="close-btn" id="closeCart">Tutup</button>
+  </div>
+</div>
+
+<footer>&copy; 2025 Mas Emyu Food • Delivery & Pickup</footer>
+
+<script>
+const products=[
+  {id:1,name:"Kwek Kwek",price:7000,img:"https://www.wikihow.com/images/3/3b/Make-Kwek-Kwek-Step-12.jpg",desc:"Telur puyuh berbalut tepung oranye khas Filipina, gurih dan renyah!"},
+  {id:2,name:"Onion Rings",price:7000,img:"https://buckets.sasa.co.id/v1/AUTH_Assets/Assets/p/website/medias/page_medias/resep_onion_ring.jpg",desc:"Cincin bawang goreng renyah, cocok jadi teman ngemil."},
+  {id:3,name:"Jamur Crispy",price:7000,img:"https://i.ytimg.com/vi/OTPtx8WmJDw/maxresdefault.jpg",desc:"Jamur tiram goreng tepung, garing di luar lembut di dalam."},
+  {id:4,name:"Karaage",price:10000,img:"https://asset.kompas.com/crops/T6YH1mBwpOlCu8GccNlFhoniDsM=/0x0:1000x667/1200x800/data/photo/2023/01/27/63d32f161d7cf.jpg",desc:"Ayam goreng ala Jepang dengan bumbu khas, juicy banget!"},
+  {id:5,name:"Ebi Tempura",price:15000,img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7K6S0N9W6o6W9-Hu_hUrkenodNJ6dSzHFiQ&s",desc:"Udang besar berbalut tepung krispi khas Jepang."},
+  {id:6,name:"French Fries",price:6000,img:"https://www.awesomecuisine.com/wp-content/uploads/2009/05/french-fries.jpg",desc:"Kentang goreng gurih renyah."},
+  {id:7,name:"Iced Tea",price:3000,img:"https://static.vecteezy.com/system/resources/thumbnails/056/342/813/small/refreshing-iced-tea-in-a-clear-plastic-cup-filled-with-ice-cubes-on-a-light-background-photo.jpeg",desc:"Homemade iced tea."},
+  {id:8,name:"Nutrisari Jeruk Peras",price:3500,img:"https://id-test-11.slatic.net/p/c391677b3958f52eed13a0de769803a1.png",desc:"Nutrisari jeruk peras."},
+  {id:9,name:"Cheese Sauce",price:4000,img:"https://willys-kitchen.com/wp-content/uploads/2022/09/%D9%83%D9%88%D8%A8-%D8%B5%D9%88%D8%B5-%D8%A7%D9%84%D8%AC%D8%A8%D9%86.png",desc:"Saus keju creamy."}
+];
+let cart=[];let discountApplied=false;
+
+function renderProducts(){
+  const grid=document.getElementById('productGrid');
+  grid.innerHTML='';
+  products.forEach(p=>{
+    const itemInCart=cart.find(i=>i.id===p.id);
+    const div=document.createElement('div');
+    div.className='card';
+    div.innerHTML=`
+      <img src="${p.img}" alt="${p.name}">
+      <div class="title">${p.name}</div>
+      <div class="desc">${p.desc}</div>
+      <div class="price">Rp ${p.price.toLocaleString()}</div>
+      ${
+        itemInCart
+        ? `<div class="qty-control" id="qty-${p.id}">
+            <button onclick="changeQty(${p.id},-1)">−</button>
+            <span>${itemInCart.qty}</span>
+            <button onclick="changeQty(${p.id},1)">+</button>
+          </div>`
+        : `<button class="btn" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>`
+      }`;
+    grid.appendChild(div);
+  });
+}
+
+function addToCart(id){const p=products.find(x=>x.id===id);const f=cart.find(i=>i.id===id);if(f)f.qty++;else cart.push({...p,qty:1});updateCart();renderProducts();}
+function changeQty(id,delta){const item=cart.find(i=>i.id===id);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(i=>i.id!==id);updateCart();renderProducts();}
+function updateCart(){document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0);}
+document.getElementById('openCart').onclick=()=>{document.getElementById('cartModal').style.display='flex';renderCartItems();};
+document.getElementById('closeCart').onclick=()=>{document.getElementById('cartModal').style.display='none';};
+
+function renderCartItems(){
+  const cartItems=document.getElementById('cartItems');
+  cartItems.innerHTML='';let total=0;
+  cart.forEach(i=>{total+=i.price*i.qty;cartItems.innerHTML+=`<div class="cart-item"><span>${i.name} × ${i.qty}</span><span>Rp ${(i.price*i.qty).toLocaleString()}</span></div>`;});
+  if(discountApplied){total-=total*0.15;document.getElementById('cartTotal').textContent=`Total (diskon 15%): Rp ${total.toLocaleString()}`;}
+  else document.getElementById('cartTotal').textContent='Total: Rp '+total.toLocaleString();
+}
+
+document.getElementById('applyDiscount').onclick=()=>{
+  const code=document.getElementById('discountCode').value.trim().toUpperCase();
+  const msg=document.getElementById('discountMsg');
+  const today=new Date();
+  const isFriday=today.getDay()===5;
+  if(code==="AKUFANSEMYU"&&isFriday){discountApplied=true;msg.style.color="green";msg.textContent="Kode promo Jumat diterapkan 🎉";renderCartItems();}
+  else if(!isFriday){msg.style.color="red";msg.textContent="Kode hanya berlaku setiap hari Jumat.";}
+  else{msg.style.color="red";msg.textContent="Kode tidak valid.";}
+};
+
+document.getElementById('checkoutBtn').onclick=()=>{
+  if(cart.length===0){alert("Keranjang masih kosong!");return;}
+  let msg="Halo! Saya ingin pesan makanan:%0A";
+  cart.forEach(i=>{msg+=`- ${i.name} x ${i.qty} = Rp ${(i.price*i.qty).toLocaleString()}%0A`;});
+  let total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  if(discountApplied){total-=total*0.15;msg+=`%0A(Diskon 15% diterapkan)%0A`;}
+  const payment=document.getElementById('payment').value;
+  const notes=document.getElementById('notes').value.trim();
+  msg+=`%0ATotal: Rp ${total.toLocaleString()}%0AMetode Pembayaran: ${payment}`;
+  if(notes) msg+=`%0ACatatan: ${notes}`;
+  window.open(`https://wa.me/62895357586674?text=${msg}`,'_blank');
+};
+
+renderProducts();
+updateCart();
+
+/* === Countdown Promo Jumat ke 00.00 WIB === */
+function updateCountdown(){
+  const now=new Date();
+  const countdownEl=document.getElementById("countdown");
+  const friday=new Date();
+  const diffDays=(5-now.getDay()+7)%7||7;
+  friday.setDate(now.getDate()+diffDays);
+  friday.setHours(0,0,0,0);
+  const diff=friday-now;
+  if(diff<=0){countdownEl.textContent="Promo sedang berlangsung!";return;}
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff/(1000*60*60))%24);
+  const m=Math.floor((diff/60000)%60);
+  const s=Math.floor((diff/1000)%60);
+  countdownEl.textContent=`Promo mulai dalam ${d>0?d+"h ":""}${h}j ${m}m ${s}d`;
+}
+setInterval(updateCountdown,1000);
+</script>
+</body>
+</html>
