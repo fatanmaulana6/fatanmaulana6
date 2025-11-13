@@ -72,7 +72,7 @@
   </section>
 
   <section>
-    <h2>Menu Populer</h2>
+    <h2>My Menu</h2>
     <div class="grid" id="productGrid"></div>
   </section>
 </main>
@@ -160,27 +160,42 @@ function renderCartItems(){
   else document.getElementById('cartTotal').textContent='Total: Rp '+total.toLocaleString();
 }
 
-document.getElementById('applyDiscount').onclick=()=>{
-  const code=document.getElementById('discountCode').value.trim().toUpperCase();
-  const msg=document.getElementById('discountMsg');
-  const today=new Date();
-  const isFriday=today.getDay()===5;
-  if(code==="AKUFANSEMYU"&&isFriday){discountApplied=true;msg.style.color="green";msg.textContent="Kode promo Jumat diterapkan 🎉";renderCartItems();}
-  else if(!isFriday){msg.style.color="red";msg.textContent="Kode hanya berlaku setiap hari Jumat.";}
-  else{msg.style.color="red";msg.textContent="Kode tidak valid.";}
+document.getElementById('applyDiscount').onclick = () => {
+  const code = document.getElementById('discountCode').value.trim().toUpperCase();
+  const msg = document.getElementById('discountMsg');
+  const today = new Date();
+  const isFriday = today.getDay() === 5;
+
+  if (code === "AKUFANSEMYU") {
+    if (isFriday) {
+      discountApplied = true;
+      msg.style.color = "green";
+      msg.textContent = "Kode promo Jumat diterapkan 🎉";
+      renderCartItems();
+    } else {
+      msg.style.color = "red";
+      msg.textContent = "Kode hanya berlaku setiap hari Jumat.";
+    }
+  } else if (code !== "") {
+    msg.style.color = "red";
+    msg.textContent = "Kode tidak valid.";
+  } else {
+    msg.style.color = "red";
+    msg.textContent = "Silakan masukkan kode promo.";
+  }
 };
 
 document.getElementById('checkoutBtn').onclick=()=>{
   if(cart.length===0){alert("Keranjang masih kosong!");return;}
-  let msg="Halo! Saya ingin pesan makanan:%0A";
+  let msg="Halo! Saya ingin pesan:%0A";
   cart.forEach(i=>{msg+=`- ${i.name} x ${i.qty} = Rp ${(i.price*i.qty).toLocaleString()}%0A`;});
   let total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  if(discountApplied){total-=total*0.15;msg+=`%0A(Diskon 15% diterapkan)%0A`;}
+  if(discountApplied){total-=total*0.15;msg+=`%0A(Diskon 15% berhasil diterapkan)%0A`;}
   const payment=document.getElementById('payment').value;
   const notes=document.getElementById('notes').value.trim();
   msg+=`%0ATotal: Rp ${total.toLocaleString()}%0AMetode Pembayaran: ${payment}`;
   if(notes) msg+=`%0ACatatan: ${notes}`;
-  window.open(`https://wa.me/62895357586674?text=${msg}`,'_blank');
+  window.open(`https://wa.me/6283164546098?text=${msg}`,'_blank');
 };
 
 renderProducts();
