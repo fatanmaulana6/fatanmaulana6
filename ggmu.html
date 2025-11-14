@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mas Emyu Food — Online Menu</title>
+
 <style>
   :root{
     --bg:#fff7f2; --primary:#d62828; --accent:#ffd166; --muted:#555;
@@ -34,19 +35,28 @@
   .qty-control button:hover{transform:scale(1.1)}
   @keyframes fadeIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
   footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+
+  /* Intro store */
   .intro{text-align:center;margin:10px 0 20px;}
   .intro img{border-radius:16px;margin:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
   .intro .logo{width:150px;height:150px;object-fit:cover;}
   .intro .desc{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.4;max-width:400px;margin-left:auto;margin-right:auto;}
+
+  /* Modal Cart */
   .modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:100;}
   .modal-content{background:#fff;border-radius:12px;padding:16px;width:90%;max-width:400px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
   .cart-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding:6px 0}
   .cart-item span{font-size:14px}
   .close-btn{background:#ccc;color:#000;border:0;border-radius:6px;padding:6px 10px;cursor:pointer}
   .checkout-btn{background:var(--primary);color:#fff;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;width:100%;margin-top:10px;font-weight:700}
+
+  /* Payment + Notes */
   .discount-box{margin-top:10px}
-  .discount-box input, .discount-box select, .discount-box textarea{width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;margin-bottom:6px;font-family:inherit}
+  .discount-box input, .discount-box select, .discount-box textarea{
+    width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;margin-bottom:6px;font-family:inherit
+  }
   .apply-btn{background:var(--accent);border:0;padding:6px 10px;border-radius:6px;cursor:pointer;font-weight:600}
+
   #countdown{font-weight:700;color:var(--primary);font-size:14px;margin-top:4px}
 </style>
 </head>
@@ -58,26 +68,31 @@
 </header>
 
 <main>
+
+  <!-- Intro toko -->
   <div class="intro">
     <img src="https://github.com/fatanmaulana6/fatanmaulana6/blob/main/logo.jpg?raw=true" class="logo">
     <p class="desc">🔴 Mas Emyu Food: The Theatre of Eats! 🏆 Selamat datang di Mas Emyu Food, tempat di mana lidah Anda akan mencetak hattrick kebahagiaan! Kami bukan sekadar toko makanan biasa; kami adalah "Theatre of Eats", markas kuliner bagi para pelanggan yang tahu bahwa rasa enak itu sama pentingnya dengan meraih kemenangan.</p>
   </div>
 
+  <!-- Promo -->
   <section class="hero">
     <div>
       <h1>🎉 Promo Spesial Jumat</h1>
-      <p class="lead">Gunakan kode <b>AKUFANSEMYU</b> dan nikmati diskon 15% hanya setiap hari Jumat!</p>
+      <p class="lead">Gunakan kode <b>AKUFANSEMYU</b> dan nikmati diskon 15% setiap hari Jumat!</p>
       <div id="countdown"></div>
     </div>
   </section>
 
+  <!-- Product List -->
   <section>
     <h2>My Menu</h2>
     <div class="grid" id="productGrid"></div>
   </section>
+
 </main>
 
-<!-- Popup Keranjang -->
+<!-- Cart Modal -->
 <div class="modal" id="cartModal">
   <div class="modal-content">
     <h3>Keranjang Belanja</h3>
@@ -105,9 +120,12 @@
   </div>
 </div>
 
-<footer>&copy; 2025 Mas Emyu Food • Delivery & Pickup</footer>
+<footer>&copy; 2025 Mas Emyu Food • Pemadam Kelaparanmu</footer>
 
+
+<!-- SCRIPT -->
 <script>
+/* === DATA PRODUK === */
 const products=[
   {id:1,name:"Kwek Kwek",price:8000,img:"https://www.wikihow.com/images/3/3b/Make-Kwek-Kwek-Step-12.jpg",desc:"Telur puyuh berbalut tepung oranye khas Filipina, gurih dan renyah!"},
   {id:2,name:"Onion Rings",price:8000,img:"https://buckets.sasa.co.id/v1/AUTH_Assets/Assets/p/website/medias/page_medias/resep_onion_ring.jpg",desc:"Cincin bawang goreng renyah, cocok jadi teman ngemil."},
@@ -119,8 +137,12 @@ const products=[
   {id:8,name:"Nutrisari Jeruk Peras",price:3500,img:"https://id-test-11.slatic.net/p/c391677b3958f52eed13a0de769803a1.png",desc:"Nutrisari jeruk peras."},
   {id:9,name:"Cheese Sauce",price:3500,img:"https://willys-kitchen.com/wp-content/uploads/2022/09/%D9%83%D9%88%D8%A8-%D8%B5%D9%88%D8%B5-%D8%A7%D9%84%D8%AC%D8%A8%D9%86.png",desc:"Saus keju creamy."}
 ];
-let cart=[];let discountApplied=false;
 
+let cart=[];
+let discountApplied=false;
+
+
+/* === RENDER PRODUK === */
 function renderProducts(){
   const grid=document.getElementById('productGrid');
   grid.innerHTML='';
@@ -146,79 +168,151 @@ function renderProducts(){
   });
 }
 
-function addToCart(id){const p=products.find(x=>x.id===id);const f=cart.find(i=>i.id===id);if(f)f.qty++;else cart.push({...p,qty:1});updateCart();renderProducts();}
-function changeQty(id,delta){const item=cart.find(i=>i.id===id);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(i=>i.id!==id);updateCart();renderProducts();}
-function updateCart(){document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0);}
-document.getElementById('openCart').onclick=()=>{document.getElementById('cartModal').style.display='flex';renderCartItems();};
-document.getElementById('closeCart').onclick=()=>{document.getElementById('cartModal').style.display='none';};
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  const f=cart.find(i=>i.id===id);
+  if(f)f.qty++;
+  else cart.push({...p,qty:1});
+  updateCart();
+  renderProducts();
+}
+
+function changeQty(id,delta){
+  const item=cart.find(i=>i.id===id);
+  if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0)cart=cart.filter(i=>i.id!==id);
+  updateCart();
+  renderProducts();
+}
+
+function updateCart(){
+  document.getElementById('cartCount').textContent=
+    cart.reduce((s,i)=>s+i.qty,0);
+}
+
+
+/* === MODAL === */
+document.getElementById('openCart').onclick=()=>{
+  document.getElementById('cartModal').style.display='flex';
+  renderCartItems();
+};
+document.getElementById('closeCart').onclick=()=>{
+  document.getElementById('cartModal').style.display='none';
+};
 
 function renderCartItems(){
   const cartItems=document.getElementById('cartItems');
-  cartItems.innerHTML='';let total=0;
-  cart.forEach(i=>{total+=i.price*i.qty;cartItems.innerHTML+=`<div class="cart-item"><span>${i.name} × ${i.qty}</span><span>Rp ${(i.price*i.qty).toLocaleString()}</span></div>`;});
-  if(discountApplied){total-=total*0.15;document.getElementById('cartTotal').textContent=`Total (diskon 15%): Rp ${total.toLocaleString()}`;}
-  else document.getElementById('cartTotal').textContent='Total: Rp '+total.toLocaleString();
+  cartItems.innerHTML='';
+  let total=0;
+
+  cart.forEach(i=>{
+    total+=i.price*i.qty;
+    cartItems.innerHTML+=`
+      <div class="cart-item">
+        <span>${i.name} × ${i.qty}</span>
+        <span>Rp ${(i.price*i.qty).toLocaleString()}</span>
+      </div>`;
+  });
+
+  if(discountApplied){
+    total -= total * 0.15;
+    document.getElementById('cartTotal').textContent=
+      `Total (diskon 15%): Rp ${total.toLocaleString()}`;
+  } else {
+    document.getElementById('cartTotal').textContent=
+      'Total: Rp ' + total.toLocaleString();
+  }
 }
 
-document.getElementById('applyDiscount').onclick = () => {
-  const code = document.getElementById('discountCode').value.trim().toUpperCase();
-  const msg = document.getElementById('discountMsg');
-  const today = new Date();
-  const isFriday = today.getDay() === 5;
 
-  if (code === "AKUFANSEMYU") {
-    if (isFriday) {
-      discountApplied = true;
-      msg.style.color = "green";
-      msg.textContent = "Kode promo Jumat diterapkan 🎉";
+/* === DISKON === */
+document.getElementById('applyDiscount').onclick=()=>{
+  const code=document.getElementById('discountCode').value.trim().toUpperCase();
+  const msg=document.getElementById('discountMsg');
+  const today=new Date();
+  const isFriday=today.getDay()===5;
+
+  if(code==="AKUFANSEMYU"){
+    if(isFriday){
+      discountApplied=true;
+      msg.style.color="green";
+      msg.textContent="Diskon 15% diterapkan";
       renderCartItems();
     } else {
-      msg.style.color = "red";
-      msg.textContent = "Kode hanya berlaku setiap hari Jumat.";
+      msg.style.color="red";
+      msg.textContent="Kode hanya berlaku setiap hari Jumat.";
     }
-  } else if (code !== "") {
-    msg.style.color = "red";
-    msg.textContent = "Kode tidak valid.";
+  } else if(code!==""){
+    msg.style.color="red";
+    msg.textContent="Kode tidak valid.";
   } else {
-    msg.style.color = "red";
-    msg.textContent = "Silakan masukkan kode promo.";
+    msg.style.color="red";
+    msg.textContent="Silakan masukkan kode promo.";
   }
 };
 
+
+/* === CHECKOUT TO WA === */
 document.getElementById('checkoutBtn').onclick=()=>{
   if(cart.length===0){alert("Keranjang masih kosong!");return;}
+
   let msg="Halo! Saya ingin pesan:%0A";
-  cart.forEach(i=>{msg+=`- ${i.name} x ${i.qty} = Rp ${(i.price*i.qty).toLocaleString()}%0A`;});
+  cart.forEach(i=>{
+    msg+=`- ${i.name} x ${i.qty} = Rp ${(i.price*i.qty).toLocaleString()}%0A`;
+  });
+
   let total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  if(discountApplied){total-=total*0.15;msg+=`%0A(Diskon 15% berhasil diterapkan)%0A`;}
+  if(discountApplied){
+    total-=total*0.15;
+    msg+=`%0A(Diskon 15% berhasil diterapkan)%0A`;
+  }
+
   const payment=document.getElementById('payment').value;
   const notes=document.getElementById('notes').value.trim();
+
   msg+=`%0ATotal: Rp ${total.toLocaleString()}%0AMetode Pembayaran: ${payment}`;
-  if(notes) msg+=`%0ACatatan: ${notes}`;
+  if(notes)msg+=`%0ACatatan: ${notes}`;
+
   window.open(`https://wa.me/6283164546098?text=${msg}`,'_blank');
 };
 
 renderProducts();
 updateCart();
 
-/* === Countdown Promo Jumat ke 00.00 WIB === */
+
+/* === COUNTDOWN JUMAT 00:00 WIB === */
 function updateCountdown(){
-  const now=new Date();
-  const countdownEl=document.getElementById("countdown");
-  const friday=new Date();
-  const diffDays=(5-now.getDay()+7)%7||7;
-  friday.setDate(now.getDate()+diffDays);
+  const now = new Date();
+  const countdownEl = document.getElementById("countdown");
+
+  const friday = new Date(now);
+
+  let day = now.getDay(); // 0 minggu ... 5 jumat
+  let diffDays = 5 - day;
+
+  if (diffDays < 0) diffDays += 7;
+
+  friday.setDate(now.getDate() + diffDays);
   friday.setHours(0,0,0,0);
-  const diff=friday-now;
-  if(diff<=0){countdownEl.textContent="Promo sedang berlangsung!";return;}
-  const d=Math.floor(diff/(1000*60*60*24));
-  const h=Math.floor((diff/(1000*60*60))%24);
-  const m=Math.floor((diff/60000)%60);
-  const s=Math.floor((diff/1000)%60);
-  countdownEl.textContent=`Promo mulai dalam ${d>0?d+"h ":""}${h}j ${m}m ${s}d`;
+
+  const diff = friday - now;
+
+  if (diff <= 0){
+    countdownEl.textContent = "Promo sedang berlangsung!";
+    return;
+  }
+
+  const h = Math.floor(diff/(1000*60*60));
+  const m = Math.floor((diff/(1000*60)) % 60);
+  const s = Math.floor((diff/1000) % 60);
+
+  countdownEl.textContent =
+    `Promo mulai dalam ${h}j ${m}m ${s}d`;
 }
-setInterval(updateCountdown,1000);
+
+setInterval(updateCountdown, 1000);
 </script>
+
 </body>
 </html>
-
