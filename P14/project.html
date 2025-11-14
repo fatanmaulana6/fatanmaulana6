@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portofolio – Project</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f5f7ff}
+
+/* NAVBAR */
+nav{background:white;padding:15px 35px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 3px 10px rgba(0,0,0,0.1);position:sticky;top:0}
+nav .logo{font-size:22px;font-weight:bold;color:#4a5ffd}
+nav ul{display:flex;gap:25px;list-style:none}
+nav ul li a{text-decoration:none;color:#333;font-weight:600}
+nav ul li a.active,nav ul li a:hover{color:#4a5ffd}
+
+/* PROJECT */
+.projects{text-align:center;padding:80px 20px}
+.project-grid{margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px}
+.project-card{background:white;padding:15px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:0.3s}
+.project-card:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+.project-card img{width:100%;border-radius:10px}
+.project-card img {
+    width: 100%;
+    height: 200px;       /* Atur tinggi yang sama */
+    object-fit: cover;   /* Biar gambar ter-crop rapi tanpa distorsi */
+    border-radius: 10px;
+}
+/* ===== FOOTER ===== */
+.footer {
+    background: #111;
+    color: #eee;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+.footer-container {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+.footer-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.footer-desc {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.footer-social a {
+    color: #00bcd4;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    color: #fff;
+}
+
+.footer-copy {
+    margin-top: 20px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="logo">MyPortofolio</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a class="active" href="project.html">Project</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="projects">
+  <h2>Project Saya</h2>
+
+  <div class="project-grid">
+
+    <div class="project-card">
+      <img src="https://github.com/fatanmaulana6/fatanmaulana6/blob/main/Screenshot%202025-11-14%20143622.png?raw=true">
+      <h3>Website Toko Online</h3>
+      <p>Website modern dengan fitur cart dan checkout.</p>
+    </div>
+
+    <div class="project-card">
+      <img src="https://github.com/fatanmaulana6/fatanmaulana6/blob/main/Screenshot%202025-10-19%20071543.png?raw=true">
+      <h3>Game Sederhana</h3>
+      <p>Game tebak pemain Manchester United.</p>
+    </div>
+
+    <div class="project-card">
+      <img src="https://github.com/fatanmaulana6/fatanmaulana6/blob/main/nya.jpg?raw=true">
+      <h3>Kesenian</h3>
+      <p>Bermain calung dan ngabodor.</p>
+    </div>
+
+  </div>
+</section>
+<footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-social">
+      <a href="https://www.instagram.com/tann69_?igsh=eWRvejd4Mm9wOTFt" target="_blank">Instagram</a>
+      <a href="https://wa.me/62895357586674" target="_blank">Whatsapp</a>
+    </div>
+
+    <p class="footer-copy">© 2025 Nurrijal Fatan Maulana — All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

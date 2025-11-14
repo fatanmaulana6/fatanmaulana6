@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portofolio – Home</title>
+
+<style>
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#f5f7ff;color:#222}
+
+/* NAVBAR */
+nav{background:white;padding:15px 35px;display:flex;justify-content:space-between;
+align-items:center;box-shadow:0 3px 10px rgba(0,0,0,0.1);position:sticky;top:0;z-index:10}
+nav .logo{font-size:22px;font-weight:bold;color:#4a5ffd}
+nav ul{display:flex;list-style:none;gap:25px}
+nav ul li a{text-decoration:none;color:#333;font-weight:600}
+nav ul li a.active,nav ul li a:hover{color:#4a5ffd}
+
+/* HOME */
+.home{padding:80px 0;background:linear-gradient(135deg,#ffffff,#e9efff)}
+.home-container{max-width:1100px;display:flex;align-items:center;justify-content:space-between;margin:auto;padding:0 20px;gap:50px}
+.home-text h1{font-size:48px;font-weight:bold}
+.home-text h1 span{color:#4a5ffd}
+.tagline{font-size:20px;margin:10px 0;color:#555}
+.description{margin:20px 0;font-size:18px;color:#444}
+.home-btn{background:#4a5ffd;padding:12px 25px;color:white;border-radius:10px;text-decoration:none;font-weight:bold}
+.home-photo img{width:320px;height:320px;object-fit:cover;border-radius:50%;border:6px solid white;box-shadow:0 10px 30px rgba(0,0,0,0.15)}
+/* ===== FOOTER ===== */
+.footer {
+    background: #111;
+    color: #eee;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+.footer-container {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+.footer-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.footer-desc {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.footer-social a {
+    color: #00bcd4;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    color: #fff;
+}
+
+.footer-copy {
+    margin-top: 20px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="logo">MyPortofolio</div>
+  <ul>
+    <li><a class="active" href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="project.html">Project</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="home">
+  <div class="home-container">
+    <div class="home-text">
+      <h1>Hi, I’m <span>Nurrijal Fatan Maulana</span></h1>
+      <p class="tagline">Mahasiswa | Desainer Web | Sport Lovers</p>
+      <p class="description">Selamat datang di My Portofolio! Saya seorang mahasiswa yang tertarik pada dunia pengembangan dan desain web, kesenian tradisional, dan beragam bidang olahraga.</p>
+      <a href="project.html" class="home-btn">Lihat Project</a>
+    </div>
+
+    <div class="home-photo">
+      <img src="https://github.com/fatanmaulana6/fatanmaulana6/blob/main/p.jpg?raw=true" alt="Foto Profil">
+    </div>
+  </div>
+</section>
+<footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-social">
+      <a href="https://www.instagram.com/tann69_?igsh=eWRvejd4Mm9wOTFt" target="_blank">Instagram</a>
+      <a href="https://wa.me/62895357586674" target="_blank">Whatsapp</a>
+    </div>
+
+    <p class="footer-copy">© 2025 Nurrijal Fatan Maulana — All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

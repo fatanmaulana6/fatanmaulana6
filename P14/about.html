@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portofolio – About</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f5f7ff}
+
+/* NAVBAR */
+nav{background:white;padding:15px 35px;display:flex;justify-content:space-between;
+align-items:center;box-shadow:0 3px 10px rgba(0,0,0,0.1);position:sticky;top:0;z-index:10}
+nav .logo{font-size:22px;font-weight:bold;color:#4a5ffd}
+nav ul{display:flex;list-style:none;gap:25px}
+nav ul li a{text-decoration:none;color:#333;font-weight:600}
+nav ul li a.active,nav ul li a:hover{color:#4a5ffd}
+
+/* ABOUT */
+.about{padding:80px 20px;max-width:1000px;margin:auto;text-align:center}
+.about-text{font-size:18px;margin:20px auto 40px;max-width:700px}
+
+/* SKILLS */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;margin-top:30px}
+.skill-card{background:white;padding:20px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:0.3s}
+.skill-card:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+.skill-bar{width:100%;height:10px;background:#ddd;border-radius:10px;margin-top:10px;overflow:hidden}
+.skill-bar div{height:10px;background:#4a5ffd;border-radius:10px}
+/* ===== FOOTER ===== */
+.footer {
+    background: #111;
+    color: #eee;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+.footer-container {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+.footer-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.footer-desc {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.footer-social a {
+    color: #00bcd4;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    color: #fff;
+}
+
+.footer-copy {
+    margin-top: 20px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="logo">MyPortofolio</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a class="active" href="about.html">About</a></li>
+    <li><a href="project.html">Project</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="about">
+  <h2>Tentang Saya</h2>
+
+  <p class="about-text">
+    Saya adalah mahasiswa yang memiliki minat dalam web development, kesenian, dan beragam bidang olahraga.
+  </p>
+
+  <h3>My Skills</h3>
+
+  <div class="skills">
+
+    <div class="skill-card">
+      <h4>Badminton</h4>
+      <div class="skill-bar"><div style="width:50%"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <h4>Futsal</h4>
+      <div class="skill-bar"><div style="width:50%"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <h4>Volley</h4>
+      <div class="skill-bar"><div style="width:50%"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <h4>Html</h4>
+      <div class="skill-bar"><div style="width:90%"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <h4>CSS</h4>
+      <div class="skill-bar"><div style="width:80%"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <h4>JavaScript</h4>
+      <div class="skill-bar"><div style="width:80%"></div></div>
+    </div>
+
+
+
+  </div>
+</section>
+<footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-social">
+      <a href="https://www.instagram.com/tann69_?igsh=eWRvejd4Mm9wOTFt" target="_blank">Instagram</a>
+      <a href="https://wa.me/62895357586674" target="_blank">Whatsapp</a>
+    </div>
+
+    <p class="footer-copy">© 2025 Nurrijal Fatan Maulana — All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
