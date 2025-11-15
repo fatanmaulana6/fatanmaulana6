@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Implementasi Stack</title>
+  <style>
+    :root{
+      --panel: rgba(255,255,255,0.92);
+      --muted:#7a7f87;
+      --brand-red:#da291c;
+      --brand-black:#000;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, Roboto, system-ui, sans-serif;
+      background:
+        linear-gradient(rgba(0,0,0,0.8), rgba(218,41,28,0.85)),
+        url('https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg') no-repeat center center fixed;
+      background-size: 45%, cover;
+      color:#fff;
+    }
+    .app{display:flex;flex-direction:column;height:100vh;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);}
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 16px;
+      background:var(--brand-red);
+      color:#fff;
+      box-shadow:0 2px 8px rgba(0,0,0,0.4)
+    }
+    .brand{font-weight:700;font-size:16px;text-shadow:0 1px 2px rgba(0,0,0,0.4)}
+    .toolbar{display:flex;gap:8px;margin-left:auto}
+    button{
+      background:#fff;border:1px solid #e6e7ea;padding:6px 8px;
+      border-radius:8px;cursor:pointer;transition:all .2s
+    }
+    button:hover{background:#f4f4f4;transform:translateY(-1px)}
+    select{padding:6px;border-radius:8px;border:1px solid #e6e7ea}
+
+    .editor-wrap{flex:1;display:flex;flex-direction:column;padding:18px;}
+    .editor{
+      flex:1;
+      background:var(--panel) url('https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg') no-repeat center center;
+      background-size: 60%;
+      background-blend-mode: lighten;
+      opacity:0.98;
+      border:1px dashed #e2e4ea;
+      border-radius:10px;
+      padding:18px;
+      overflow:auto;
+      outline:none;
+      color:#000;
+    }
+    .editor:empty:before{content:attr(data-placeholder);color:var(--muted)}
+    footer{
+      padding:8px 16px;font-size:13px;color:#fff;
+      border-top:1px solid rgba(255,255,255,0.3);
+      background:linear-gradient(90deg,var(--brand-black),var(--brand-red));
+      text-shadow:0 1px 1px rgba(0,0,0,0.5)
+    }
+    .right{margin-left:auto}
+
+    /* === MODAL PEEK === */
+    .modal-bg{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.6);
+      display:none;justify-content:center;align-items:center;
+      padding:20px;z-index:10;
+    }
+    .modal{
+      background:white;width:90%;max-width:600px;
+      padding:20px;border-radius:12px;color:#000;
+      box-shadow:0 4px 20px rgba(0,0,0,0.4);
+      max-height:80vh;overflow:auto;
+    }
+    .modal h3{margin-top:0}
+    .modal pre{
+      white-space:pre-wrap;
+      background:#f5f5f5;
+      padding:12px;border-radius:10px;
+      font-size:15px;
+      border:1px solid #ddd;
+    }
+    .close-btn{
+      background:#da291c;color:white;padding:8px 14px;
+      border:none;border-radius:8px;margin-top:12px;
+      cursor:pointer;font-weight:600;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">MyPageFavoritGua</div>
+      <div class="toolbar" role="toolbar">
+        <button id="btn-bold">B</button>
+        <button id="btn-italic"><em>I</em></button>
+        <button id="btn-underline"><u>U</u></button>
+
+        <select id="font-size">
+          <option value="16px">16</option>
+          <option value="18px" selected>18</option>
+          <option value="20px">20</option>
+          <option value="24px">24</option>
+          <option value="32px">32</option>
+        </select>
+
+        <button id="btn-clear">Clear</button>
+        <button id="btn-download">Download</button>
+        <button id="btn-peek">Peek</button>
+      </div>
+    </header>
+
+    <div class="editor-wrap">
+      <div id="editor" class="editor" contenteditable="true"
+        spellcheck="true" data-placeholder="Mulai mengetik di sini..."></div>
+    </div>
+
+    <footer>
+      <span id="word-count">Kata: 0</span>
+      <span class="right" id="char-count">Karakter: 0</span>
+    </footer>
+  </div>
+
+  <!-- MODAL -->
+  <div id="peekModal" class="modal-bg">
+    <div class="modal">
+      <h3>Tulisan Terakhir yang Disimpan</h3>
+      <pre id="peekText">(kosong)</pre>
+      <button class="close-btn" onclick="closePeek()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    const editor = document.getElementById('editor');
+    const btnBold = document.getElementById('btn-bold');
+    const btnItalic = document.getElementById('btn-italic');
+    const btnUnderline = document.getElementById('btn-underline');
+    const fontSize = document.getElementById('font-size');
+    const btnClear = document.getElementById('btn-clear');
+    const btnDownload = document.getElementById('btn-download');
+    const btnPeek = document.getElementById('btn-peek');
+    const wordCount = document.getElementById('word-count');
+    const charCount = document.getElementById('char-count');
+
+    function exec(cmd, value = null){
+      document.execCommand(cmd,false,value);
+      editor.focus();
+      updateCounts();
+    }
+
+    btnBold.onclick = () => exec('bold');
+    btnItalic.onclick = () => exec('italic');
+    btnUnderline.onclick = () => exec('underline');
+
+    fontSize.onchange = () => {
+      const size = fontSize.value;
+      document.execCommand('fontSize', false, '7');
+      editor.querySelectorAll('font[size="7"]').forEach(f=>{
+        const span=document.createElement('span');
+        span.style.fontSize=size;
+        span.innerHTML=f.innerHTML;
+        f.parentNode.replaceChild(span,f);
+      });
+      editor.focus();
+    };
+
+    btnClear.onclick = () => {
+      if(confirm('Yakin ingin membersihkan semua isi?')){
+        editor.innerHTML='';
+        updateCounts();
+      }
+    };
+
+    /* === DOWNLOAD + SIMPAN LAST TEXT === */
+    btnDownload.onclick = () => {
+      const text = editor.innerText || '';
+      // simpan ke localStorage
+      localStorage.setItem('lastSavedText', text);
+
+      const blob = new Blob([text], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url; a.download='tulisan.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    };
+
+    /* === PEEK FEATURE === */
+    btnPeek.onclick = () => {
+      const last = localStorage.getItem('lastSavedText') || "(belum ada file yang di-download)";
+      document.getElementById('peekText').textContent = last;
+      document.getElementById('peekModal').style.display='flex';
+    };
+
+    function closePeek(){
+      document.getElementById('peekModal').style.display='none';
+    }
+
+    function updateCounts(){
+      const text = editor.innerText || '';
+      const chars = text.replace(/\n/g,'').length;
+      const words = text.trim().length ? text.trim().split(/\s+/).length : 0;
+      wordCount.textContent = 'Kata: ' + words;
+      charCount.textContent = 'Karakter: ' + chars;
+    }
+
+    editor.addEventListener('input', updateCounts);
+
+    editor.addEventListener('paste',(e)=>{
+      e.preventDefault();
+      const text=(e.clipboardData||window.clipboardData).getData('text');
+      document.execCommand('insertText', false, text);
+    });
+
+    window.addEventListener('keydown',(e)=>{
+      if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){
+        e.preventDefault();
+        btnDownload.click();
+      }
+    });
+
+    editor.focus();
+    updateCounts();
+  </script>
+</body>
+</html>
