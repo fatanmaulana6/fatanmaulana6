@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajahi Pesona Kuningan (Card View)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Umum */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f7; 
+            color: #333;
+            line-height: 1.6;
+            /* Tambahkan properti untuk animasi loading */
+            opacity: 0; /* Mulai tersembunyi */
+            animation: fadeIn 1s ease-in-out forwards; /* Terapkan animasi fadeIn */
+            scroll-behavior: smooth; 
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+        
+        /* --- ANIMASI KEYFRAMES --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* ------------------------- */
+
+        /* Header */
+        .header-kuningan {
+            background-image: linear-gradient(135deg, #4CAF50 0%, #008000 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header-kuningan h1 {
+            margin: 0;
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar a {
+            display: inline-block;
+            color: white;
+            padding: 14px 16px; /* Padding sedikit dikurangi karena item lebih banyak */
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s, color 0.3s;
+            position: relative;
+        }
+        .navbar a:hover {
+            background-color: #222;
+            transform: scale(1.05);
+            color: #4CAF50;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #4CAF50;
+            transition: width 0.4s ease;
+        }
+
+        .navbar a:hover::after {
+            width: 100%;
+            left: 0;
+            background: #4CAF50;
+        }
+
+        /* Struktur Card Dasar */
+        .section-card-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .info-card, .data-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            flex: 1 1 45%; 
+        }
+        .data-card {
+            padding: 20px;
+        }
+        .info-card img {
+            width: 100%;
+            height: 200px; 
+            object-fit: cover;
+            display: block;
+        }
+        .info-card-content {
+            padding: 15px 20px;
+        }
+        .info-card-content h3 {
+            color: #008000;
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        /* Styling Section */
+        section {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            scroll-margin-top: 70px; /* Offset untuk sticky navbar */
+        }
+        section h2 {
+            color: #008000;
+            border-bottom: 3px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        section h2 .icon {
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        
+        /* Tata Letak Pejabat */
+        .pejabat-card-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .pejabat-card {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 45%;
+            min-width: 250px;
+            background-color: #e8f5e9;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .pejabat-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .pejabat-card img {
+            width: 100%;
+            max-width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .pejabat-card h3 {
+            margin: 5px 0 0;
+            color: #008000;
+            font-size: 1.2em;
+        }
+
+        /* Tata Letak Grid (Kuliner, Budaya, Wisata, Agama) */
+        .grid-3-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s;
+            /* Animasi Slide-up */
+            opacity: 0; 
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+        /* Penundaan (delay) untuk animasi card agar muncul bergantian */
+        .grid-3-col .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .grid-3-col .feature-card:nth-child(2) { animation-delay: 0.4s; }
+        .grid-3-col .feature-card:nth-child(3) { animation-delay: 0.6s; }
+        .grid-3-col .feature-card:nth-child(4) { animation-delay: 0.8s; }
+
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .feature-card img {
+            width: 100%;
+            height: 180px; 
+            object-fit: cover;
+            display: block;
+        }
+        .feature-card-content {
+            padding: 15px;
+        }
+        .feature-card-content strong {
+            color: #008000;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        /* Footer Baru */
+        .footer-kuningan {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 30px;
+        }
+
+        /* Styling Kontak */
+        .contact-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #555;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: #4CAF50; /* Hijau saat hover */
+            transform: translateY(-3px);
+        }
+        /* Akhir Styling Kontak */
+
+    </style>
+</head>
+<body>
+
+    <header class="header-kuningan">
+        <h1>MyBlogFavoritGua</h1>
+        <p>Jelajahi Pesona Kota Kuningan</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="#profil">Profil</a>
+        <a href="#pemerintahan">Pemerintahan</a>
+        <a href="#sejarah">Sejarah</a>
+        <a href="#kuliner">Kuliner</a>
+        <a href="#budaya">Budaya</a>
+        <a href="#keagamaan">Agama</a> <a href="#wisata">Wisata</a>
+    </nav>
+
+    <div class="container">
+        
+        <section id="profil">
+            <h2><span class="icon">🗺️</span> Profil Singkat Kabupaten Kuningan</h2>
+            <div class="section-card-container">
+                <div class="info-card">
+                    <img src="https://awsimages.detik.net.id/community/media/visual/2024/06/25/gapura-selamat-datang-di-kabupaten-kuningan-rusak_169.jpeg?w=1200" alt="Pemandangan Gunung Ciremai Kuningan">
+                    <h3>Gapura Selamat Datang Kuningan</h3>
+                </div>
+                <div class="data-card">
+                    <h3>Tentang Kuningan</h3>
+                    <p><strong>Kabupaten Kuningan</strong> adalah kabupaten di Provinsi Jawa Barat. Wilayah ini dikenal dengan keindahan alamnya karena berada tepat di kaki Gunung Ciremai, yang merupakan puncak tertinggi di Jawa Barat.</p>
+                    <ul>
+                        <li><strong>Lokasi:</strong> Kaki Gunung Ciremai, Jawa Barat.</li>
+                        <li><strong>Ibukota:</strong> Kuningan.</li>
+                        <li><strong>Peran:</strong> Pusat budaya Sunda dan sejarah nasional.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="pemerintahan">
+            <h2><span class="icon">🏛️</span> Pimpinan Daerah Kabupaten Kuningan (2025-2030)</h2>
+            <div class="pejabat-card-container">
+                <div class="pejabat-card">
+                    <img src="https://images.goodkind.id/v2/image/https%3A%2F%2Fimages.goodkind.id%2Fberkas-silonkada%2Fcalon%2F2549%2Fpas_foto%2Fthumbnail_1725694152_9a31ad82-11e9-4338-842b-e245953375d8.jpeg?width=300" alt="Foto Bupati Dian Rachmat Yanuar">
+                    <h3>Dr. H. Dian Rachmat Yanuar, M.Si.</h3>
+                    <p><strong>Bupati Kuningan</strong></p>
+                    <p>Periode 2025-2030</p>
+                </div>
+
+                <div class="pejabat-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/id/9/9d/Tuti_Andriani_Cawabup_Kuningan_2024.png" alt="Foto Wakil Bupati Tuti Andriani">
+                    <h3>Hj. Tuti Andriani, S.H., M.Kn.</h3>
+                    <p><strong>Wakil Bupati Kuningan</p>
+                    <p>Periode 2025-2030</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="sejarah">
+            <h2><span class="icon">📜</span> Sejarah dan Peristiwa Penting</h2>
+            <div class="section-card-container">
+                <div class="info-card">
+                    <img src="https://museum.co.id/wp-content/uploads/2020/09/serunya-berwisata-di-gedung-linggarjati-yang-penuh-sejarah-K8rstZBNXh.jpg" alt="Museum Perundingan Linggarjati">
+                    <h3>Gedung Perundingan Linggarjati</h3>
+                </div>
+                <div class="data-card">
+                    <h3>Perjanjian Linggarjati</h3>
+                    <p>Peristiwa paling penting di Kuningan adalah **Perjanjian Linggarjati** yang dilaksanakan pada tahun 1946.</p>
+                    <ul>
+                        <li><strong>Signifikasi:</strong> Tonggak sejarah penting dalam perjuangan kemerdekaan RI.</li>
+                        <li>**Lokasi:** Museum Perundingan Linggarjati, kini menjadi objek wisata sejarah utama.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="kuliner">
+            <h2><span class="icon">🍲</span> Kuliner Khas Kuningan</h2>
+            <p>Nikmati hidangan khas Kuningan yang lezat dan otentik:</p>
+
+            <div class="grid-3-col">
+                <div class="feature-card">
+                    <img src="https://cdn.rri.co.id/berita/Voice_of_Indonesia/o/1726050511649-Hucap_Dapur_Teh_Enur/s5s28zuclj7uy0m.png" alt="Foto Hucap">
+                    <div class="feature-card-content">
+                        <strong>Hucap (Kupat Tahu Kecap)</strong>
+                        <span>Hidangan utama Kuningan dengan bumbu kacang dan kecap yang kental.</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://id-live-01.slatic.net/p/3b86c1fb21c3ca0c64db7f54d2b507cc.jpg" alt="Foto Kue Gapit">
+                    <div class="feature-card-content">
+                        <strong>Opak Bakar</strong>
+                        <span>Camilan renyah dan gurih, terbuat dari bahan dasar beras ketan dan kelapa yang dibakar dengan arang.</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://kabarrakyat.id/uploads/images/202502/image_870x_67b069c60e6c8.jpg" alt="Foto Nasi Kasreng">
+                    <div class="feature-card-content">
+                        <strong>Nasi Kasreng</strong>
+                        <span>Nasi pulen dengan lauk sederhana seperti teri, tempe orek, dan sambal.</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card" style="grid-column: span 1 / auto; max-width: 380px;">
+                    <img src="https://i.gojekapi.com/darkroom/gofood-indonesia/v2/images/uploads/ea848477-1b25-4b7e-bc8e-79df6273aa1b_IMG_20200819_185058_882.jpg" alt="Foto Peuyeum Ketan">
+                    <div class="feature-card-content">
+                        <strong>Peuyeum Ketan</strong>
+                        <span>Makanan fermentasi beras ketan, dibungkus daun, dengan rasa manis asam yang unik.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="budaya">
+            <h2><span class="icon">🎭</span> Seni dan Budaya Tradisional</h2>
+            <p>Kesenian dan tradisi yang dilestarikan di Kuningan:</p>
+
+            <div class="grid-3-col">
+                <div class="feature-card">
+                    <img src="https://i0.wp.com/www.infobudaya.net/wp-content/uploads/2017/09/27tari-buyung.jpg?fit=650%2C365&ssl=1" alt="Foto Tari Buyung">
+                    <div class="feature-card-content">
+                        <strong>Tari Buyung</strong>
+                        <span>Kesenian dari Cipari di mana penari membawa *buyung* (wadah air) di atas kepala, melambangkan kehidupan.</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://pesonasambimulyo.com/beritadesa/upload/390-IMG-20230806-WA0011.jpg" alt="Foto Sedekah Bumi">
+                    <div class="feature-card-content">
+                        <strong>Sedekah Bumi</strong>
+                        <span>Upacara adat sebagai wujud syukur kepada alam dan Tuhan Yang Maha Esa atas hasil panen.</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://ciayumajakuning.id/wp-content/uploads/2023/09/WhatsApp-Image-2023-09-08-at-23.08.17-1140x760-1.jpeg" alt="Foto Kesenian Sunda">
+                    <div class="feature-card-content">
+                        <strong>Pagelaran Wayang Golek</strong>
+                        <span>Kesenian tradisional khas Jawa Barat yang aktif dipentaskan di Kuningan, terutama saat acara besar seperti Hari Jadi Kabupaten Kuningan.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="keagamaan">
+            <h2><span class="icon">🕌</span> Jejak Sejarah Keagamaan</h2>
+            <p>Kabupaten Kuningan memiliki situs-situs keagamaan yang menjadi saksi sejarah:</p>
+            <div class="grid-3-col">
+                <div class="feature-card">
+                    <img src="https://www.koranmandala.com/wp-content/uploads/2024/03/FotoJet-36-jpg.webp" alt="Makam Syekh Maulana Akbar">
+                    <div class="feature-card-content">
+                        <strong>Makam Syekh Maulana Akbar</strong>
+                        <span>Situs ziarah yang diyakini sebagai makam salah satu penyebar agama Islam di Jawa Barat.</span>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <img src="https://menara.baznas.go.id/attachments/masjid-musholla/foto-thumbnail/M320830023012024765-masjid-agung-syi-arul-islam-kabupaten-kuningan-20240916090516.jpg" alt="Masjid Agung Sancaki">
+                    <div class="feature-card-content">
+                        <strong>Masjid Agung Syiarul Islam</strong>
+                        <span>Pusat ibadah dan ikon arsitektur Islam modern di tengah kota Kuningan.</span>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZWfEaZLqWsOAftsArwtihVSsPe77-hkrmxg&s" alt="Gereja Kristus Raja">
+                    <div class="feature-card-content">
+                        <strong>Gereja Kristus Raja</strong>
+                        <span>Contoh harmoni keagamaan, melayani komunitas Kristen di Kuningan sejak masa kolonial.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="wisata">
+            <h2><span class="icon">🏞️</span> Destinasi Wisata Alam</h2>
+            <p>Eksplorasi keindahan alam Kuningan yang terletak di lereng Gunung Ciremai:</p>
+
+            <div class="grid-3-col">
+                <div class="feature-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Gunung_Ciremai_sfw2503.jpg" alt="Foto Gunung Ciremai">
+                    <div class="feature-card-content">
+                        <strong>Gunung Ciremai</strong>
+                        <span>Puncak tertinggi di Jawa Barat, magnet bagi pendaki dan pencinta alam.</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://garvingoei.com/wp-content/uploads/2018/08/sidomba-5.jpg" alt="Foto Curug Sidomba">
+                    <div class="feature-card-content">
+                        <strong>Curug Sidomba</strong>
+                        <span>Kawasan air terjun dan rekreasi keluarga yang populer, menawarkan kesejukan alami.</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://indonesiakaya.com/wp-content/uploads/2020/10/2__Telaga_Remis_diambil_dari_kata_telaga_yang_berarti_danau_dan_remis_yang_berarti_kerang.jpg" alt="Foto Telaga Remis">
+                    <div class="feature-card-content">
+                        <strong>Telaga Remis</strong>
+                        <span>Danau alami yang dikelilingi pepohonan rindang, tempat sempurna untuk bersantai.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer-kuningan">
+        <p>&copy; 2025 Jelajah Kuningan. Nurrijal Fatan Maulana.</p>
+        
+        <div class="contact-info">
+            <a href="https://www.instagram.com/tann69_?igsh=eWRvejd4Mm9wOTFt" target="_blank" title="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="https://wa.me/62895357586674" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="mailto:fatanmaulana694@gmail.com" title="Gmail"><i class="fas fa-envelope"></i> Gmail</a>
+        </div>
+
+    </footer>
+
+    <script>
+        // Smooth Scrolling Script (dipertahankan untuk handling offset navbar)
+        document.querySelectorAll('.navbar a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                const navbarHeight = document.querySelector('.navbar').offsetHeight; 
+
+                if (targetElement) {
+                    const offsetPosition = targetElement.offsetTop - navbarHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
